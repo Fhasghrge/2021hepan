@@ -1,45 +1,47 @@
 import { useCallback, useState } from "react";
 import { View, Text, Button, Image } from "@tarojs/components";
-import { useEnv, useNavigationBar, useModal, useToast } from "taro-hooks";
+import { useModal, useScanCode, useRouter } from "taro-hooks";
 
-import Wheel from './images/wheel-merge.png'
+import Introduce from './components/introduce';
 import Pointer from './images/pointer.png'
 import ScanLogo from './images/scan-red.png'
 import './index.scss'
 
+const WheelLogo = 'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/wheel-merge.png'
+
 const Index = () => {
   const [count, setCount] = useState(1)
-  const env = useEnv();
-  const [_, { setTitle }] = useNavigationBar({ title: "Taro Hooks" });
-  const [show] = useModal({
-    title: "Taro Hooks!",
-    showCancel: false,
-    confirmColor: "#8c2de9",
-    confirmText: "支持一下",
-    mask: true,
-  });
-  const [showToast] = useToast({ mask: true });
+  const [scan, cameraScan] = useScanCode();
+  const [showIntrod, setShowIntrod] = useState(false)
+  const [show] = useModal({ mask: true, title: '扫码结果', showCancel: false });
+  const [_, { navigateTo }] = useRouter()
 
-  const handleModal = useCallback(() => {
-    show({ content: "不如给一个star⭐️!" }).then(() => {
-      showToast({ title: "点击了支持!" });
-    });
-  }, [show, showToast]);
+  const handleScan = useCallback(
+    (scanType) => {
+      scan({ scanType }).then((res) => {
+        show({ content: JSON.stringify(res) });
+      });
+    },
+    [scan, show],
+  );
 
   return (
     <View className='wrapper'>
       <View >
-        <Text className='activity_introduce'>活动介绍 </Text>
-        <Image className='scan_logo' src={ScanLogo} />
+        <Text className='activity_introduce' onClick={() => setShowIntrod(true)}>活动介绍</Text>
+        <Image className='scan_logo' onClick={() => handleScan('qrCode')} src={ScanLogo} />
       </View>
-      <Text className='debris_count'>抽奖次数{count}</Text>
+      <View className='debris_count'>抽奖次数{count}</View>
       <View className='wheel_wrapper'>
-        <Image className='wheel' src={Wheel} />
+        <Image className='wheel' src={WheelLogo} />
         <Image className='pointer' src={Pointer} />
       </View>
-      <Button className='my_debris' onClick={() => setTitle("Taro Hooks Nice!")}>
+      <Button className='my_debris' onClick={() => navigateTo('/pages/debris/index')}>
         我的碎片
       </Button>
+      {
+        showIntrod && <Introduce hideButton={() => setShowIntrod(false)} />
+      }
     </View >
   );
 };

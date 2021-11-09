@@ -8,5 +8,4 @@ function Debris() {
   )
 }
 
-
 export default Debris;
