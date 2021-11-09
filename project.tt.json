@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "2021hepan",
+  "description": "2021河畔周年庆",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}

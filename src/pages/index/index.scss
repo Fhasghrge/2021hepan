@@ -1,0 +1,73 @@
+page {
+  background: url('./images/background.png') no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+
+.activity_introduce {
+  background: url('./images/fill.png');
+  background-size: cover;
+  font-size: 42px;
+  border-radius: 0 80px 80px 0;
+  display: inline-block;
+  height: 68px;
+  padding-right: 20px;
+  width: 184px;
+  line-height: 68px;
+  color: #B4102D;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+.scan_logo {
+  background: url('./images/fill.png');
+  position: absolute;
+  right: 0;
+  border-radius: 80px 0 0 80px;
+  top: 0;
+  width: 112px;
+  height: 112px;
+  border: 1px solid red;
+  padding: 0 10px 0 30px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+}
+.wheel_wrapper {
+  width: 642px; height: 642px;
+  position: absolute;
+  top: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  .wheel {
+    height: 642px;
+    width: 642px;
+  }
+  .pointer {
+    position: absolute;
+    width: 256px;height: 256px;
+    left: 50%; top: 50%;
+    transform: translate((-50%, -70%));
+    z-index: 88;
+  }
+}
+
+.my_debris {
+  background: url('./images/fill.png');
+  background-size: cover;
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 80px;
+  color: #B4102D;
+  font-weight: bold;
+  font-size: 70px;
+  width: 374px;
+  height: 128px;
+  line-height: 128px;
+  padding: 0;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+}
