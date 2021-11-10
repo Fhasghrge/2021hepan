@@ -1,10 +1,10 @@
 export default {
   pages: [
-    "pages/index/index",
-    "pages/debris/index",
     "pages/awardList/index",
-    "pages/infoSubmit/index",
+    "pages/index/index",
     "pages/participate/index",
+    "pages/debris/index",
+    "pages/infoSubmit/index",
   ],
   window: {
     backgroundTextStyle: "light",

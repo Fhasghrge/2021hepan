@@ -1,6 +1,8 @@
+import { View } from '@tarojs/components'
+
 function InfoSubmit() {
   return (
-    <div>InfoSubmit</div>
+    <View>InfoSubmit</View>
   )
 }
 

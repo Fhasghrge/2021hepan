@@ -1,4 +1,4 @@
 export default {
-  navigationBarTitleText: 'Taro-hooks',
+  navigationBarTitleText: '周年庆抽奖',
   enableShareAppMessage: true,
 };
