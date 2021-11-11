@@ -5,6 +5,7 @@ export default {
     "pages/participate/index",
     "pages/debris/index",
     "pages/infoSubmit/index",
+    "pages/thanks/index"
   ],
   window: {
     backgroundTextStyle: "light",

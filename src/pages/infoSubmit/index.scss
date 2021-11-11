@@ -1,0 +1,82 @@
+$theRed: rgb(190, 0, 0);
+$theGold:#F2EEA6;
+$theShodow: 5px 5px 10px rgb(36, 35, 35);
+page {
+    background: url('https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/background_none.jpg') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+  
+.index {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  height: 100%;
+  .formBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 60px 10px 60px;
+    border: {
+      style: solid;
+      width: 2px;
+      color: rgb(100, 0, 0);
+      radius: 20px;
+    }
+    max-width: 80%;
+    min-width: 60%;
+    box-shadow: $theShodow;
+    .title {
+      color: $theGold;
+      font-weight: bolder;
+      font-size: 50px;
+    }
+    .label {
+      color: $theGold;
+      font-weight: bolder;
+      font-size: 40px;
+      background-color: $theGold;
+      color: $theRed;
+      text-align: center;
+      width: 200px;
+      margin-bottom: 5px;
+    }
+    .infoInput {
+      margin: 10px 0 10px 0;
+      height: 50px;
+      line-height: 50px;
+      overflow: hidden;
+      color: $theGold;
+      font-weight: bold;
+      padding-left: 5px;
+      box-shadow: inset 5px 5px 5px rgb(36, 35, 35);
+      border: {
+        style: solid;
+        width: 1px 0.5px 1px 0.5px;
+        color: wheat;
+      }
+    }
+    .submitButton {
+      background-color: $theGold;
+      color: $theRed;
+      height: 80px;
+      line-height: 80px;
+      border-radius: 50px;
+      width: 80%;
+      font-weight: bolder;
+      box-shadow: $theShodow;
+      &:hover {
+        background-color: wheat;
+      }
+      &:active {
+        background-color: wheat;
+      }
+    }
+  }
+}
