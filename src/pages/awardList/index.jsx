@@ -5,11 +5,12 @@ import {
   Image,
   Text
 } from '@tarojs/components'
-import { useRouter } from 'taro-hooks'
+import Taro from '@tarojs/taro'
 
 import './index.scss'
 
 const AWARD_LIST = [
+  'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/award_list/%E6%8A%B1%E6%9E%95.png',
   'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/award_list%2Fipad2021.JPG',
   'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/award_list%2FSwitch.JPG',
   'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/award_list%2FGoPro%20HERO9%20Black.JPG',
@@ -21,7 +22,7 @@ const AWARD_LIST = [
   'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/award_list%2FSKG%E9%A2%88%E6%A4%8E%E6%8C%89%E6%91%A9%E4%BB%AAG7Pro.JPG',
 ]
 function AwardList() {
-  const [ _, { navigateTo }] = useRouter()
+
   return (
     <View>
       <View className='award_banner'>
@@ -34,7 +35,7 @@ function AwardList() {
           autoplay
         >
           {
-            AWARD_LIST.map(url => <SwiperItem key={url}> <Image src={url} /> </SwiperItem> )
+            AWARD_LIST.map(url => <SwiperItem key={url}> <Image mode='aspectFit' src={url} /> </SwiperItem> )
           }
         </Swiper>
         <View>
@@ -48,7 +49,7 @@ function AwardList() {
       <View
         //TODO:  waiting for time control
         className='participate waiting'
-        onClick={() => navigateTo('/pages/participate/index')}
+        onClick={() => Taro.navigateTo({url: '/pages/participate/index'})}
       >
         待开奖
       </View>

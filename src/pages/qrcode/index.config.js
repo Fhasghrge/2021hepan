@@ -1,4 +1,4 @@
 export default {
-  navigationBarTitleText: '十四周年庆抽奖',
+  navigationBarTitleText: '工作人员code',
   enableShareAppMessage: true,
 };
