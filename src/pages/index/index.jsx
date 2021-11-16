@@ -1,8 +1,9 @@
 import { useCallback, useState, useEffect } from "react";
 import { View, Text, Button, Image } from "@tarojs/components";
 import Taro from '@tarojs/taro';
-import { useModal, useScanCode, useRouter } from "taro-hooks";
+import { useScanCode } from "taro-hooks";
 
+import { Login, getTimes, getMyTime, getFra } from '../../API'
 import Introduce from './components/introduce';
 import Pointer from './images/pointer.png'
 import ScanLogo from './images/scan-red.png'
@@ -14,23 +15,53 @@ const Index = () => {
   const [count, setCount] = useState(1)
   const [showIntrod, setShowIntrod] = useState(false)
   const [animation, setAnimation] = useState({})
-  const [rotateScale, setRotateScale] = useState(90)
+  const [rotateScale, setRotateScale] = useState(250)
   const [scan] = useScanCode();
-  const [show] = useModal({ mask: true, title: '扫码结果', showCancel: false });
-  const [_, { navigateTo }] = useRouter()
+
+  const fetchTime = async () => {
+    try {
+      const { data } = await getMyTime()
+      if(data.errcode) {
+        console.log(data.errmsg)
+        return
+      }
+      setCount(data.data.times)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleScan = useCallback(
     async (scanType) => {
-      const { result } = await scan({ scanType })
-      if (result === 'admin') {
-        Taro.navigateTo({
-          url: '/pages/qrcode/index'
+      try {
+        const { result } = await scan({ scanType })
+        // 工作人员登陆入口
+        if (result === 'admin') {
+          Taro.navigateTo({
+            url: '/pages/qrcode/index'
+          })
+          return
+        }
+        // 用户扫码
+        const { token, gift } = JSON.parse(result)
+        const { data } = await getTimes(token)
+        if(data.errcode) {
+          Taro.showToast({title: data.msg})
+          return
+        }
+        if(!data.data.can) {
+          Taro.showToast({title: '失效的二维码'})
+          return
+        }
+        Taro.showModal({
+          title: '🎉活动一次抽奖机会' + (gift ? '& 小奖品一份' : ''),
+          complete: fetchTime
         })
-        return
+      } catch (error) {
+        console.log(error)
       }
-      show({ content: JSON.stringify(result) })
     },
-    [scan, show],
+    [scan],
   );
 
   const animate = Taro.createAnimation({
@@ -40,27 +71,54 @@ const Index = () => {
     delay: 50
   })
 
+
   useEffect(() => {
-    setAnimation(animate.export())
-  },[])
-
-  const handleRotate = () => {
-    // check chance
-    // fetch puzzle
-    const puzzle = 4;
-
-    const caclulateRotate = rotateScale - 360 * 4 - 40 * puzzle + 20;
-    // rotate wheel
-    // show puzzle
-    const animateRotate = Taro.createAnimation({
-      transformOrigin: "50% 50%",
-      duration: 2000,
-      timingFunction: "ease",
-      delay: 50
+    Login().then(() => {
+      fetchTime()
+      setAnimation(animate.export())
     })
-    animateRotate.rotate(caclulateRotate).step();
-    setRotateScale(caclulateRotate);
-    setAnimation(animateRotate.export());
+  }, [])
+
+  const handleRotate = async () => {
+    try {
+      // check chance
+      if(!count) {
+        Taro.showToast({
+          title: '抽奖机会已用尽，参加活动获取机会哦'
+        })
+        return
+      }
+      // fetch puzzle
+      const { data: currFra } = await getFra()
+      if(currFra.errcode) {
+        Taro.showToast({title: currFra.errmsg})
+        return
+      }
+      console.log('currFra', currFra.data.fragment)
+
+      const puzzle = currFra.data.fragment[0];
+      console.log(Math.floor(rotateScale / 360))
+      const caclulateRotate =
+        250
+        + Math.floor(rotateScale / 360) * 360
+        + 360 * 4
+        + 40 * puzzle;
+      // rotate wheel
+      // show puzzle
+      const animateRotate = Taro.createAnimation({
+        transformOrigin: "50% 50%",
+        duration: 2000,
+        timingFunction: "ease",
+        delay: 50
+      })
+      animateRotate.rotate(-caclulateRotate).step();
+      setRotateScale(caclulateRotate);
+      setAnimation(animateRotate.export());
+
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   return (
@@ -76,7 +134,14 @@ const Index = () => {
         </View>
         <Image className='pointer' onClick={handleRotate} src={Pointer} />
       </View>
-      <Button className='my_debris' onClick={() => navigateTo('/pages/debris/index')}>
+      <Button
+        className='my_debris'
+        onClick={
+          () => Taro.navigateTo({
+            url: '/pages/debris/index'
+          })
+        }
+      >
         我的碎片
       </Button>
       {

@@ -1,5 +1,8 @@
+$fillBG: "https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/fill.png";
+$pageBG: 'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/background.png';
+
 page {
-  background: url('https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/background.png') no-repeat center center;
+  background: url($pageBG) no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   z-index: -1;
@@ -12,7 +15,7 @@ page {
   justify-content: space-between;
 
   .activity_introduce {
-    background: url('./images/fill.png');
+    background: url($fillBG);
     background-size: cover;
     font-size: 42px;
     border-radius: 0 80px 80px 0;
@@ -28,7 +31,7 @@ page {
   }
 
   .scan_logo {
-    background: url('./images/fill.png');
+    background: url($fillBG);
     border-radius: 80px 0 0 80px;
     width: 112px;
     height: 112px;
@@ -71,7 +74,7 @@ page {
 }
 
 .my_debris {
-  background: url('./images/fill.png');
+  background: url($fillBG);
   background-size: cover;
   margin: 460px auto 0;
   position: absolute;
