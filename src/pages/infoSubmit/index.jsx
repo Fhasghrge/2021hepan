@@ -5,7 +5,6 @@ import './index.scss'
 
 function InfoSubmit() {
   const [inputValueObj, setInputValueObj] = useState({})
-  const [submitValueObj, setSubmitObj] = useState({})
   function onSubmit(e) {
     e.preventDefault();
     console.log(inputValueObj)
@@ -30,7 +29,7 @@ function InfoSubmit() {
     for (let key in inputValueObj) {//验证输入
       let value = inputValueObj[key]
       switch (key) {
-        case "name":
+        case "realname":
           if (value.length <= 1 || value.length >= 7) {
             Taro.showToast({
               title: '姓名输入有误',
@@ -64,17 +63,36 @@ function InfoSubmit() {
           break;
       }
     }
-    setTimeout(() => {
-      Taro.navigateTo({
-        url: '/pages/thanks/index'
-      })
-    }, 1000)
-    Taro.showToast({
-      title: '已提交',
-      icon: 'success',
-      duration: 1000
+    // setTimeout(() => {
+    //   Taro.navigateTo({
+    //     url: '/pages/thanks/index'
+    //   })
+    // }, 1000)
+      Taro.request({
+      url:'/GiftInform',
+      method:'POST',
+      data:{
+        realname:inputValueObj.realname,
+        xuehao:inputValueObj.number,
+        tele:inputValueObj.phone
+      },
+      fail:(res)=>{
+        Taro.showToast({
+          title: '上传失败，可能是网络连接不畅，请重试',
+          duration: 1000
+        })
+      },
+      success:(res)=>{
+        Taro.showToast({
+          title: '已提交',
+          icon: 'success',
+          duration: 1000
+        })
+        Taro.navigateTo({
+          url: '/pages/thanks/index'
+        })
+      }
     })
-    setSubmitObj(inputValueObj)
   }
   function handleChange(e) {
     let ev = e.target
@@ -94,7 +112,7 @@ function InfoSubmit() {
           <View className="label">真实姓名</View>
           <Input
             className="infoInput"
-            id='name'
+            id='realname'
             title='文本'
             type='text'
             onInput={handleChange}
