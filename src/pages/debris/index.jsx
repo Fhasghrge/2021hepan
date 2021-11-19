@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
-import { getMyFraList } from '../../API'
+import { getMyFraList, participate } from '../../API'
 
 import './index.scss'
 
@@ -23,15 +23,29 @@ function Debris() {
         return;
       }
       // 参与接口调用
-      Taro.showToast({
-        title: '参与成功',
-        icon: 'success',
-      }).then(() => {
-        setTimeout(() => {
-          Taro.navigateTo({
-            url: '/pages/awardList/index'
-          })
-        }, 2300)
+      Taro.getUserInfo({
+        success: async ({ userInfo }) => {
+          try {
+            const {avatarUrl, nickName} = userInfo;
+            const { errcode, errmsg = '未知错误' } = await participate(avatarUrl, nickName)
+            if(errcode) {
+              console.log(errmsg)
+              return
+            }
+            Taro.showToast({
+              title: '参与成功',
+              icon: 'success',
+            }).then(() => {
+              setTimeout(() => {
+                Taro.navigateTo({
+                  url: '/pages/awardList/index'
+                })
+              }, 2300)
+            })
+          } catch (error) {
+            console.log(error)
+          }
+        }
       })
 
     },

@@ -112,3 +112,29 @@ export function getMyFraList() {
     path: '/GetMyFra'
   })
 }
+
+export function getRevealTime() {
+  return myRequest({
+    path: '/GiftTime'
+  })
+}
+
+export function getAwardInfo() {
+  return myRequest({
+    path: '/gift'
+  })
+}
+
+export function participate(avatarUrl, nickName) {
+  return Promise.resolve({
+    errcode: 0
+  })
+  // return myRequest({
+  //   path: '/participate',
+  //   method: 'POST',
+  //   data: {
+  //     avatarUrl,
+  //     nickName
+  //   }
+  // })
+}

@@ -30,6 +30,20 @@ page {
     .list {
       display: block;
       margin-bottom: 40px;
+      .time-label {
+        border: 1px solid #FAF8B4;
+        display: inline-block;
+        padding: 1px 14px;
+      }
+      .time-number {
+        background-color: #FAF8B4;
+        color: #BB152F;
+        font-size: 26px;
+        font-weight: bold;
+        display: inline-block;
+        padding: 3px 12px;
+        margin: 0 15px;
+      }
     }
   }
 }
