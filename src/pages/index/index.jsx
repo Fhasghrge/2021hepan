@@ -5,6 +5,7 @@ import { useScanCode } from "taro-hooks";
 
 import { Login, getTimes, getMyTime, getFra } from '../../API'
 import Introduce from './components/introduce';
+import AwardFra from './components/awardFra'
 import Pointer from './images/pointer.png'
 import ScanLogo from './images/scan-red.png'
 import './index.scss'
@@ -12,8 +13,13 @@ import './index.scss'
 const WheelLogo = 'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/wheel-merge.png'
 
 const Index = () => {
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(0)
   const [showIntrod, setShowIntrod] = useState(false)
+  const [showAwardFra, setShowAwardFra] = useState({
+    show: false,
+    pice: 1
+  })
+
   const [animation, setAnimation] = useState({})
   const [rotateScale, setRotateScale] = useState(250)
   const [scan] = useScanCode();
@@ -21,7 +27,7 @@ const Index = () => {
   const fetchTime = async () => {
     try {
       const { data } = await getMyTime()
-      if(data.errcode) {
+      if (data.errcode) {
         console.log(data.errmsg)
         return
       }
@@ -36,7 +42,7 @@ const Index = () => {
       try {
         const { result } = await scan({ scanType })
         // 工作人员登陆入口
-        if (result === 'admin') {
+        if (result === '14hepan') {
           Taro.navigateTo({
             url: '/pages/qrcode/index'
           })
@@ -45,12 +51,12 @@ const Index = () => {
         // 用户扫码
         const { token, gift } = JSON.parse(result)
         const { data } = await getTimes(token)
-        if(data.errcode) {
-          Taro.showToast({title: data.msg})
+        if (data.errcode) {
+          Taro.showToast({ title: data.msg })
           return
         }
-        if(!data.data.can) {
-          Taro.showToast({title: '失效的二维码'})
+        if (!data.data.can) {
+          Taro.showToast({ title: '失效的二维码' })
           return
         }
         Taro.showModal({
@@ -82,16 +88,17 @@ const Index = () => {
   const handleRotate = async () => {
     try {
       // check chance
-      if(!count) {
-        Taro.showToast({
-          title: '抽奖机会已用尽，参加活动获取机会哦'
+      if (!count) {
+        Taro.showModal({
+          title: '继续参加活动获取机会哦'
         })
         return
       }
       // fetch puzzle
       const { data: currFra } = await getFra()
-      if(currFra.errcode) {
-        Taro.showToast({title: currFra.errmsg})
+      await fetchTime()
+      if (currFra.errcode) {
+        Taro.showToast({ title: currFra.errmsg })
         return
       }
       console.log('currFra', currFra.data.fragment)
@@ -111,10 +118,16 @@ const Index = () => {
         timingFunction: "ease",
         delay: 50
       })
+
       animateRotate.rotate(-caclulateRotate).step();
       setRotateScale(caclulateRotate);
       setAnimation(animateRotate.export());
-
+      setTimeout(() => {
+        setShowAwardFra({
+          show: true,
+          pice: puzzle
+        })
+      }, 3000)
     } catch (error) {
       console.log(error)
     }
@@ -146,6 +159,10 @@ const Index = () => {
       </Button>
       {
         showIntrod && <Introduce hideButton={() => setShowIntrod(false)} />
+      }
+      {
+        showAwardFra.show &&
+        <AwardFra hideButton={() => setShowAwardFra({show: false, pice: 0})} pice={showAwardFra.pice}  />
       }
     </View >
   );

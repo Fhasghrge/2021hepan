@@ -16,7 +16,7 @@ export function myRequest(config) {
       url: getURL(config.path),
       method: 'GET',
       header: {
-        cookie: getStorageSync('Set-Cookie')
+        Cookie: getStorageSync('Set-Cookie').split(';')[0]
       },
       success: resolve,
       fail: reject,
@@ -73,7 +73,7 @@ export function getQrCode(place) {
 export function getTimes(token) {
   return new Promise((resolve, reject) => {
     request({
-      url: getURL('/GetTheTimes'),
+      url: getURL('/User/GetTheTimes'),
       method: 'POST',
       header: {
         cookie: getStorageSync('Set-Cookie')
@@ -90,7 +90,7 @@ export function getTimes(token) {
 export function getMyTime() {
   return new Promise((resolve, reject) => {
     request({
-      url: getURL('/ChouTimes'),
+      url: getURL('/User/ChouTimes'),
       method: 'GET',
       header: {
         cookie: getStorageSync('Set-Cookie')
@@ -103,13 +103,13 @@ export function getMyTime() {
 
 export function getFra() {
   return myRequest({
-    path: '/GetTheFra'
+    path: '/User/GetTheFra'
   })
 }
 
 export function getMyFraList() {
   return myRequest({
-    path: '/GetMyFra'
+    path: '/User/GetMyFra'
   })
 }
 
@@ -121,20 +121,31 @@ export function getRevealTime() {
 
 export function getAwardInfo() {
   return myRequest({
-    path: '/gift'
+    path: '/User/gift'
   })
 }
 
-export function participate(avatarUrl, nickName) {
-  return Promise.resolve({
-    errcode: 0
+export function participate(picurl, nickname) {
+  return myRequest({
+    path: '/User/ComeToDraw',
+    method: 'POST',
+    data: {
+      picurl,
+      nickname
+    }
   })
-  // return myRequest({
-  //   path: '/participate',
-  //   method: 'POST',
-  //   data: {
-  //     avatarUrl,
-  //     nickName
-  //   }
-  // })
+}
+
+export function hasParticipate() {
+  return myRequest({
+    path: '/User/EverDraw'
+  })
+}
+
+export function subInfo(data) {
+  return myRequest({
+    path: '/User/GiftInform',
+    method: 'POST',
+    data
+  })
 }

@@ -27,7 +27,7 @@ export default () => {
     try {
       const { data } = await getQrCode(currBranch)
       const { data: resData, errcode, errmsg = '未知错误'} = data;
-      console.log(data)
+      // console.log(data)
       if(!errcode && currBranch) {
         drawQrcode({
           width: 200,

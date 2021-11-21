@@ -36,8 +36,8 @@ function AwardList() {
           return
         }
         // TODO: waiting to change back
-        // const subSeconds = moment(data.data.stilltime, "YYYY-MM-DD-hh:mm:ss").unix() - moment().unix();
-        const subSeconds = 0;
+        const subSeconds = moment(data.data.stilltime, "YYYY-MM-DD-hh:mm:ss").unix() - moment().unix();
+        // const subSeconds = 0;
         setLeftSeconds(subSeconds > 0 ? subSeconds : 0)
       })
       .catch((err) => {
@@ -102,7 +102,7 @@ function AwardList() {
           })
         }}
       >
-        待开奖
+        {leftSeconds === 0 ? "已开奖" : "待开奖"}
       </View>
     </View>
   )

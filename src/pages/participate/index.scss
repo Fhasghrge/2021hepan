@@ -1,5 +1,7 @@
+$fillRed: 'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/fill-red.png';
+$pageBG: 'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/background_none.jpg';
 page {
-  background: url('https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com/background_none.jpg') no-repeat center center;
+  background: url($pageBG) no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   z-index: -1;
@@ -9,7 +11,7 @@ page {
 
 .get_award {
   width: 600px;
-  height: 600px;
+  height: 550px;
   margin: 160px auto;
   background-color: rgba(173,16,36, .7);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.23);
@@ -30,15 +32,11 @@ page {
   }
   .title {
     font-size: 54px;
+    line-height: 180px;
   }
   .award_level{
-    margin: 56px auto 0;
+    margin: 26px auto 100px;
     font-size: 80px;
-  }
-  .award_gift {
-    font-size: 60px;
-    margin-bottom: 70px;
-    line-height: 120px;
   }
 }
 .no-award {
@@ -53,4 +51,55 @@ page {
   margin: 306px auto;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.23);
   border-radius: 40px;
+}
+.award_list {
+  background: url($fillRed);
+  width: 600px;
+  border-radius: 40px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.23);
+  min-height: 500px;
+  margin: 0px auto 140px;
+  padding-top: 10px;
+  .title {
+    font-size: 54px;
+    color: #F2EEA6;
+    text-align: center;
+    margin: 18px auto 10px;
+    font-weight: bold;
+  }
+  .award-level{
+    .header {
+      font-weight: bold;
+      font-size: 40px;
+      color: #B50022;
+      background-color: #F2EEA6;
+      text-align: center;
+      line-height: 66px;
+    }
+    .body {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      .user {
+        margin: 0 35px;
+        text-align: center;
+        .img-wrapper {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+        Image {
+          width: 100px;
+          height: 100px;
+        }
+        .nickname {
+          font-size: 25px;
+          color: #F2EEA6;
+          font-weight: bold;
+          line-height: 40px;
+        }
+      }
+    }
+  }
 }

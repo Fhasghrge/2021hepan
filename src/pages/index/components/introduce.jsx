@@ -6,7 +6,6 @@ function Introduce({ hideButton }) {
   return (
     <View className='black_wrapper'>
       <View className='introduce'>
-        <View className='hidden'></View>
         <View className='title'>河畔周年庆</View>
         <View className='content'>
           <Text className='line'>欢迎您参加清水河畔14周年庆祝活动！</Text>

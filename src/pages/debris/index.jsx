@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { View, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 
-import { getMyFraList, participate } from '../../API'
+import { getMyFraList, participate, hasParticipate } from '../../API'
 
 import './index.scss'
 
@@ -10,9 +10,16 @@ const PUZZLE_URL = 'https://2021hepan-img-1259454779.cos.ap-nanjing.myqcloud.com
 
 function Debris() {
   const [puzzles, setPuzzles] = useState(Array(9).fill(0))
+  const [everPartic, setEverPartic] = useState(false)
 
   const handleParticipate = useCallback(
     () => {
+      if(everPartic) {
+        Taro.navigateTo({
+          url: '/pages/awardList/index'
+        })
+        return
+      }
       if (!Math.min(...puzzles)) {
         Taro.showToast({
           mask: true,
@@ -27,9 +34,11 @@ function Debris() {
         success: async ({ userInfo }) => {
           try {
             const {avatarUrl, nickName} = userInfo;
-            const { errcode, errmsg = '未知错误' } = await participate(avatarUrl, nickName)
+            console.log(userInfo)
+            const {data} = await participate(avatarUrl, nickName)
+            const { errcode = '1', errmsg = 'error' } = data
             if(errcode) {
-              console.log(errmsg)
+              Taro.showToast({title: errmsg, icon: 'none'})
               return
             }
             Taro.showToast({
@@ -49,13 +58,18 @@ function Debris() {
       })
 
     },
-    [puzzles],
+    [puzzles, everPartic],
   )
 
   useEffect(() => {
     async function fetchData() {
       try {
         const { data } = await getMyFraList()
+        const {data: particiData} = await hasParticipate()
+        if(particiData.data.can) {
+          setEverPartic(true)
+        }
+
         if (data.errcode) {
           Taro.showToast({
             title: data.errmsg
@@ -71,7 +85,7 @@ function Debris() {
 
   return (
     <View>
-      <View className='title'>集齐卡片参与抽奖</View>
+      <View className='title'>集齐碎片参与抽奖</View>
       <View className='puzzle_list'>
         {
           puzzles.map((puzzle, index) => Boolean(puzzle) && <Image key={index} src={`${PUZZLE_URL}${index + 1}.png`} />)
@@ -81,7 +95,7 @@ function Debris() {
         className={`participate ${Math.min(...puzzles) ? 'together' : 'waiting'}`}
         onClick={handleParticipate}
       >
-        参与抽奖
+        {everPartic ? "已参与":"参与抽奖" }
       </View>
     </View>
   )
